@@ -1,237 +1,229 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, FormEvent, MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Send, ArrowUpRight, MapPin, Clock } from "lucide-react";
 
-export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
+const contactLinks = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "pherolee.young@gmail.com",
+    href: "mailto:pherolee.young@gmail.com",
+  },
+  {
+    icon: Github,
+    label: "GitHub",
+    value: "@Redhathack1",
+    href: "https://github.com/Redhathack1",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    value: "Oluwaferanmi Oladapo",
+    href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
+  },
+];
 
-  const handleSubmit = (e: React.FormEvent) => {
+export default function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+  const [magnetOffset, setMagnetOffset] = useState({ x: 0, y: 0 });
+
+  const handleMagnetMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const offsetX = ((e.clientX - centerX) / (rect.width / 2)) * 4;
+    const offsetY = ((e.clientY - centerY) / (rect.height / 2)) * 4;
+    setMagnetOffset({ x: offsetX, y: offsetY });
+  };
+
+  const handleMagnetLeave = () => {
+    setMagnetOffset({ x: 0, y: 0 });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Construct mailto link as a simple solution
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const subject = (form.elements.namedItem("subject") as HTMLInputElement).value;
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
+
     const mailtoLink = `mailto:pherolee.young@gmail.com?subject=${encodeURIComponent(
-      formData.subject || "Portfolio Inquiry"
+      subject
     )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
+      `From: ${name} (${email})\n\n${message}`
     )}`;
+
     window.open(mailtoLink, "_blank");
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
-    <section id="contact" className="py-28 relative">
+    <section id="contact" className="py-28">
       <div className="section-container">
-        {/* Section Header */}
+        {/* ── Header — pattern break: no label, no decorative line ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center max-w-2xl mx-auto mb-20"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 bg-indigo-500" />
-            <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest">
-              Get In Touch
-            </span>
-            <div className="h-px w-8 bg-indigo-500" />
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-[var(--text-primary)] tracking-tight">
             Let&apos;s build something great.
           </h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
-            Whether you need an AI integration, a testing framework, or a
-            full-stack product — I&apos;m ready to ship. Let&apos;s talk.
+          <p className="mt-5 text-[var(--text-secondary)] text-lg leading-relaxed">
+            Have a project in mind, a question, or just want to connect? I&apos;d
+            love to hear from you.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
-          {/* Contact Info */}
+        {/* ── Two-column grid ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14">
+          {/* ── LEFT: Contact info ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-2 space-y-6"
+            className="lg:col-span-2 flex flex-col gap-5"
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <div className="space-y-5">
-              <a
-                href="mailto:pherolee.young@gmail.com"
-                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 transition-all group"
-              >
-                <div className="p-3 rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500/15 transition-colors">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-medium">
-                    Email
-                  </p>
-                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors">
-                    pherolee.young@gmail.com
-                  </p>
-                </div>
-                <ArrowUpRight
-                  size={16}
-                  className="ml-auto text-slate-600 group-hover:text-indigo-400 transition-colors"
-                />
-              </a>
-
-              <a
-                href="https://github.com/Redhathack1"
+            {contactLinks.map((item) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 transition-all group"
+                className="card group flex items-start gap-4 p-5 cursor-pointer"
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <div className="p-3 rounded-lg bg-purple-500/10 text-purple-400 group-hover:bg-purple-500/15 transition-colors">
-                  <Github size={20} />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-medium">
-                    GitHub
+                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--accent)]/10 text-[var(--accent)]">
+                  <item.icon size={18} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs uppercase tracking-wider text-[var(--text-muted)] mb-1">
+                    {item.label}
                   </p>
-                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors">
-                    @Redhathack1
+                  <p className="text-[var(--text-primary)] text-sm font-medium truncate">
+                    {item.value}
                   </p>
                 </div>
                 <ArrowUpRight
-                  size={16}
-                  className="ml-auto text-slate-600 group-hover:text-purple-400 transition-colors"
+                  size={14}
+                  className="mt-1 shrink-0 text-[var(--text-muted)] opacity-0 -translate-y-1 translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0"
                 />
-              </a>
+              </motion.a>
+            ))}
 
-              <a
-                href="https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-indigo-500/20 transition-all group"
-              >
-                <div className="p-3 rounded-lg bg-sky-500/10 text-sky-400 group-hover:bg-sky-500/15 transition-colors">
-                  <Linkedin size={20} />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-medium">
-                    LinkedIn
-                  </p>
-                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors">
-                    Oluwaferanmi Oladapo
-                  </p>
-                </div>
-                <ArrowUpRight
-                  size={16}
-                  className="ml-auto text-slate-600 group-hover:text-sky-400 transition-colors"
-                />
-              </a>
-            </div>
-
-            {/* Quick Info */}
-            <div className="space-y-3 pt-4">
-              <div className="flex items-center gap-3 text-sm text-slate-500">
-                <MapPin size={14} className="text-slate-600" />
+            {/* ── Meta badges ── */}
+            <div className="mt-3 flex flex-col gap-3 pl-1">
+              <span className="flex items-center gap-2.5 text-sm text-[var(--text-muted)]">
+                <MapPin size={14} className="text-[var(--accent-warm)]" />
                 Based in the United Kingdom
-              </div>
-              <div className="flex items-center gap-3 text-sm text-slate-500">
-                <Clock size={14} className="text-slate-600" />
+              </span>
+              <span className="flex items-center gap-2.5 text-sm text-[var(--text-muted)]">
+                <Clock size={14} className="text-[var(--accent-cool)]" />
                 Usually responds within 24 hours
-              </div>
+              </span>
             </div>
           </motion.div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-3"
+          {/* ── RIGHT: Contact form ── */}
+          <motion.form
+            onSubmit={handleSubmit}
+            className="lg:col-span-3 card p-7 sm:p-9 space-y-6"
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs text-slate-500 uppercase tracking-wider font-medium mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all text-sm"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-slate-500 uppercase tracking-wider font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all text-sm"
-                    placeholder="your@email.com"
-                  />
-                </div>
-              </div>
-
+            {/* Name + Email row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs text-slate-500 uppercase tracking-wider font-medium mb-2">
-                  Subject
+                <label className="block text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] mb-2 font-medium">
+                  Name
                 </label>
                 <input
+                  name="name"
                   type="text"
-                  value={formData.subject}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subject: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all text-sm"
-                  placeholder="Project inquiry, contract, hiring..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs text-slate-500 uppercase tracking-wider font-medium mb-2">
-                  Message
-                </label>
-                <textarea
                   required
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all text-sm resize-none"
-                  placeholder="Tell me about your project..."
+                  placeholder="Your name"
+                  className="input-field w-full"
                 />
               </div>
+              <div>
+                <label className="block text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] mb-2 font-medium">
+                  Email
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  className="input-field w-full"
+                />
+              </div>
+            </div>
 
-              <button
-                type="submit"
-                className="w-full sm:w-auto px-8 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl hover:from-indigo-400 hover:to-purple-500 transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] flex items-center gap-2 justify-center"
-              >
-                {submitted ? (
-                  <>✓ Opening mail client...</>
-                ) : (
-                  <>
-                    <Send size={16} />
+            {/* Subject */}
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] mb-2 font-medium">
+                Subject
+              </label>
+              <input
+                name="subject"
+                type="text"
+                required
+                placeholder="What's this about?"
+                className="input-field w-full"
+              />
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] mb-2 font-medium">
+                Message
+              </label>
+              <textarea
+                name="message"
+                required
+                rows={5}
+                placeholder="Tell me about your project..."
+                className="input-field w-full resize-none"
+              />
+            </div>
+
+            {/* Submit with magnetic effect */}
+            <div className="pt-2">
+              {submitted ? (
+                <div className="flex items-center gap-2 text-[var(--accent-cool)] text-sm font-medium py-3">
+                  <span>✓</span> Opening mail client...
+                </div>
+              ) : (
+                <div
+                  onMouseMove={handleMagnetMove}
+                  onMouseLeave={handleMagnetLeave}
+                  className="magnetic-wrap inline-block"
+                >
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-2.5 px-7 py-3 rounded-lg bg-[var(--accent)] text-white text-sm font-semibold transition-colors duration-200 hover:bg-[var(--accent)]/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50"
+                    style={{
+                      transform: `translate(${magnetOffset.x}px, ${magnetOffset.y}px)`,
+                      transition: "transform 0.2s ease-out",
+                    }}
+                  >
                     Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
+                    <Send size={15} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </motion.form>
         </div>
       </div>
     </section>

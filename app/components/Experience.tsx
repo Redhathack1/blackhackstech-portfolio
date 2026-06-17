@@ -86,73 +86,186 @@ const experience: Role[] = [
   },
 ];
 
+/* ── Card style variants per index ── */
+const cardStyles: Record<number, string> = {
+  // Card 0: current role — left accent border, slightly larger padding
+  0: "p-7 sm:p-9 rounded-2xl bg-white/[0.03] border border-white/[0.06] border-l-2 border-l-[var(--accent)] hover:border-[var(--border-active)] transition-all duration-300 group",
+  // Card 1: standard clean card
+  1: "p-6 sm:p-8 rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-[var(--accent-warm)]/30 transition-all duration-300 group",
+  // Card 2: education — subdued tint, different bg
+  2: "p-6 sm:p-8 rounded-2xl bg-[var(--accent-cool)]/[0.02] border border-[var(--accent-cool)]/[0.08] hover:border-[var(--accent-cool)]/20 transition-all duration-300 group",
+};
+
+const dotColors: Record<number, string> = {
+  0: "bg-[var(--accent)]",
+  1: "bg-[var(--accent-warm)]",
+  2: "bg-[var(--accent-cool)]",
+};
+
+const titleHoverColors: Record<number, string> = {
+  0: "group-hover:text-[var(--accent)]",
+  1: "group-hover:text-[var(--accent-warm)]",
+  2: "group-hover:text-[var(--accent-cool)]",
+};
+
+const companyColors: Record<number, string> = {
+  0: "text-[var(--accent)]",
+  1: "text-[var(--accent-warm)]",
+  2: "text-[var(--accent-cool)]",
+};
+
+const badgeStyles: Record<number, string> = {
+  0: "bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20",
+  1: "bg-[var(--accent-warm)]/10 text-[var(--accent-warm)] border border-[var(--accent-warm)]/20",
+  2: "bg-[var(--accent-cool)]/10 text-[var(--accent-cool)] border border-[var(--accent-cool)]/20",
+};
+
+const bulletColors: Record<number, string> = {
+  0: "bg-[var(--accent)]/60",
+  1: "bg-[var(--accent-warm)]/60",
+  2: "bg-[var(--accent-cool)]/60",
+};
+
+/* ── Tech chip layout varies per card ── */
+function TechStack({ tech, index }: { tech: string[]; index: number }) {
+  if (index === 1) {
+    // Card 2: horizontal scrollable row with slightly different styling
+    return (
+      <div className="flex flex-wrap gap-1.5">
+        {tech.map((t, k) => (
+          <span
+            key={k}
+            className="px-2.5 py-1 text-[11px] font-mono font-medium bg-[var(--accent-warm)]/[0.06] border border-[var(--accent-warm)]/10 rounded-md text-[var(--text-secondary)]"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {tech.map((t, k) => (
+        <span
+          key={k}
+          className="px-3 py-1 text-xs font-medium bg-white/[0.04] border border-white/[0.06] rounded-full text-[var(--text-secondary)]"
+        >
+          {t}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function Experience() {
   return (
-    <section id="experience" className="py-28 relative">
+    <section id="experience" className="py-32 relative">
       {/* Subtle background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/[0.02] to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--accent)]/[0.015] to-transparent pointer-events-none" />
 
       <div className="section-container relative z-10">
-        {/* Section Header */}
+        {/* Section Header — inline label + extending rule */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5 }}
-          className="mb-16"
+          className="flex items-center gap-5 mb-20"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-indigo-500" />
-            <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest">
-              Experience
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Where I&apos;ve made impact.
-          </h2>
+          <span className="text-sm font-semibold text-[var(--accent)] uppercase tracking-[0.2em] whitespace-nowrap">
+            Experience
+          </span>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="h-px flex-1 bg-gradient-to-r from-[var(--accent)]/40 to-transparent origin-left"
+          />
         </motion.div>
 
         {/* Timeline */}
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-500/40 via-purple-500/20 to-transparent" />
+          {/* Animated gradient timeline line */}
+          <div
+            className="absolute left-0 md:left-8 top-0 bottom-0 w-px"
+            style={{
+              background:
+                "linear-gradient(180deg, var(--accent) 0%, var(--accent-warm) 50%, var(--accent-cool) 100%)",
+              backgroundSize: "100% 200%",
+              animation: "timelineShift 6s ease-in-out infinite alternate",
+            }}
+          />
 
-          <div className="space-y-12">
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes timelineShift {
+              0% { background-position: 0% 0%; }
+              100% { background-position: 0% 100%; }
+            }
+          `}} />
+
+          <div className="space-y-14">
             {experience.map((role, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  delay: i * 0.15,
+                  ease: "easeOut",
+                }}
                 className="relative pl-8 md:pl-20"
               >
-                {/* Timeline Dot */}
-                <div className="absolute left-0 md:left-8 top-2 -translate-x-1/2 w-3 h-3 rounded-full bg-indigo-500 border-4 border-[#050510] shadow-lg shadow-indigo-500/30" />
+                {/* Pulsing Timeline Dot */}
+                <div className="absolute left-0 md:left-8 top-3 -translate-x-1/2">
+                  <motion.div
+                    animate={{
+                      boxShadow: [
+                        "0 0 0 0 rgba(124,106,239,0.4)",
+                        "0 0 0 8px rgba(124,106,239,0)",
+                      ],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                    }}
+                    className={`w-3 h-3 rounded-full ${dotColors[i] || dotColors[0]} border-[3px] border-[var(--surface-base)]`}
+                  />
+                </div>
 
-                {/* Card */}
-                <div className="p-6 sm:p-8 rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-indigo-500/20 transition-all duration-300 group">
+                {/* Card — each with unique treatment */}
+                <div className={cardStyles[i] || cardStyles[1]}>
                   {/* Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
+                      <h3
+                        className={`text-xl font-bold text-[var(--text-primary)] ${titleHoverColors[i] || ""} transition-colors`}
+                      >
                         {role.title}
                       </h3>
-                      <p className="text-indigo-400 font-medium">
+                      <p
+                        className={`font-medium ${companyColors[i] || "text-[var(--accent)]"}`}
+                      >
                         {role.company}
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-sm text-slate-500 font-mono">
+                      <span className="text-sm text-[var(--text-muted)] font-mono">
                         {role.period}
                       </span>
-                      <span className="px-3 py-1 text-xs font-medium rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                      <span
+                        className={`px-3 py-1 text-xs font-medium rounded-full ${badgeStyles[i] || badgeStyles[0]}`}
+                      >
                         {role.type}
                       </span>
                     </div>
                   </div>
 
-                  <p className="text-slate-400 mb-5 leading-relaxed">
+                  <p className="text-[var(--text-secondary)] mb-5 leading-relaxed">
                     {role.description}
                   </p>
 
@@ -161,25 +274,18 @@ export default function Experience() {
                     {role.achievements.map((achievement, j) => (
                       <li
                         key={j}
-                        className="flex items-start gap-3 text-sm text-slate-400"
+                        className="flex items-start gap-3 text-sm text-[var(--text-secondary)]"
                       >
-                        <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-indigo-500/60" />
+                        <span
+                          className={`mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full ${bulletColors[i] || bulletColors[0]}`}
+                        />
                         {achievement}
                       </li>
                     ))}
                   </ul>
 
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2">
-                    {role.tech.map((t, k) => (
-                      <span
-                        key={k}
-                        className="px-3 py-1 text-xs font-medium bg-white/[0.04] border border-white/[0.06] rounded-full text-slate-400"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                  {/* Tech Stack — varies by card */}
+                  <TechStack tech={role.tech} index={i} />
                 </div>
               </motion.div>
             ))}

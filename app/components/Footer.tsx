@@ -1,63 +1,57 @@
 "use client";
 
-import React from "react";
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
+
+const socials = [
+  {
+    icon: Github,
+    href: "https://github.com/Redhathack1",
+    label: "GitHub",
+  },
+  {
+    icon: Linkedin,
+    href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
+    label: "LinkedIn",
+  },
+  {
+    icon: Mail,
+    href: "mailto:pherolee.young@gmail.com",
+    label: "Email",
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.04]">
-      <div className="section-container py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white text-sm">
+    <footer className="border-t border-[var(--border-subtle)]">
+      <div className="section-container py-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+          {/* ── Left: Brand ── */}
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-[var(--accent)] to-[var(--accent-warm)] text-white text-xs font-bold">
               B
-            </div>
-            <span className="text-sm text-slate-400">
-              © {new Date().getFullYear()}{" "}
-              <span className="text-slate-300 font-medium">BlackHacksTech</span>
-              . All rights reserved.
+            </span>
+            <span className="text-[var(--text-muted)]">
+              © {new Date().getFullYear()} BlackHacksTech
             </span>
           </div>
 
-          {/* Center - Built with */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-600">
-            Built with <Heart size={12} className="text-pink-500" /> using
-            Next.js &amp; Tailwind
-          </div>
+          {/* ── Center: Tagline ── */}
+          <p className="text-[var(--text-muted)] text-xs tracking-wide">
+            Crafted with care in the UK 🇬🇧
+          </p>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-2">
-            {[
-              {
-                icon: <Github size={16} />,
-                href: "https://github.com/Redhathack1",
-                label: "GitHub",
-              },
-              {
-                icon: <Linkedin size={16} />,
-                href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
-                label: "LinkedIn",
-              },
-              {
-                icon: <Mail size={16} />,
-                href: "mailto:pherolee.young@gmail.com",
-                label: "Email",
-              },
-            ].map((social) => (
+          {/* ── Right: Social icons ── */}
+          <div className="flex items-center gap-1">
+            {socials.map((s) => (
               <a
-                key={social.label}
-                href={social.href}
-                target={social.label !== "Email" ? "_blank" : undefined}
-                rel={
-                  social.label !== "Email"
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                aria-label={social.label}
-                className="p-2.5 text-slate-600 hover:text-slate-300 hover:bg-white/[0.05] rounded-lg transition-all duration-200"
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="flex h-8 w-8 items-center justify-center rounded-md text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--text-primary)] hover:bg-[var(--surface-card)]"
               >
-                {social.icon}
+                <s.icon size={16} />
               </a>
             ))}
           </div>

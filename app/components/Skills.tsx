@@ -1,28 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 interface SkillGroup {
   label: string;
-  color: string;
+  dotColor: string;
+  borderColor: string;
   skills: string[];
 }
 
 const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
-    color: "text-blue-400 border-blue-500/20 bg-blue-500/[0.06]",
+    dotColor: "bg-blue-400",
+    borderColor: "border-l-blue-400",
     skills: ["Java", "Python", "TypeScript", "JavaScript", "SQL"],
   },
   {
     label: "AI & ML",
-    color: "text-purple-400 border-purple-500/20 bg-purple-500/[0.06]",
+    dotColor: "bg-purple-400",
+    borderColor: "border-l-purple-400",
     skills: ["LangChain", "Gemini API", "RAG", "Pinecone", "Vector DBs"],
   },
   {
     label: "Testing & QA",
-    color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/[0.06]",
+    dotColor: "bg-emerald-400",
+    borderColor: "border-l-emerald-400",
     skills: [
       "Playwright",
       "Selenium",
@@ -34,12 +38,14 @@ const skillGroups: SkillGroup[] = [
   },
   {
     label: "Frontend",
-    color: "text-cyan-400 border-cyan-500/20 bg-cyan-500/[0.06]",
+    dotColor: "bg-cyan-400",
+    borderColor: "border-l-cyan-400",
     skills: ["React", "Next.js", "Tailwind CSS", "HTML/CSS", "Framer Motion"],
   },
   {
     label: "Backend",
-    color: "text-amber-400 border-amber-500/20 bg-amber-500/[0.06]",
+    dotColor: "bg-amber-400",
+    borderColor: "border-l-amber-400",
     skills: [
       "Node.js",
       "Express",
@@ -51,7 +57,8 @@ const skillGroups: SkillGroup[] = [
   },
   {
     label: "DevOps & Tools",
-    color: "text-pink-400 border-pink-500/20 bg-pink-500/[0.06]",
+    dotColor: "bg-pink-400",
+    borderColor: "border-l-pink-400",
     skills: [
       "Docker",
       "Kubernetes",
@@ -63,64 +70,150 @@ const skillGroups: SkillGroup[] = [
   },
   {
     label: "Databases",
-    color: "text-indigo-400 border-indigo-500/20 bg-indigo-500/[0.06]",
+    dotColor: "bg-indigo-400",
+    borderColor: "border-l-indigo-400",
     skills: ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Supabase"],
   },
 ];
 
-export default function Skills() {
-  return (
-    <section id="skills" className="py-28 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/[0.015] to-transparent pointer-events-none" />
+// Build flat list of all skills with their category info for marquee
+const allSkillsTagged = skillGroups.flatMap((group) =>
+  group.skills.map((skill) => ({
+    name: skill,
+    dotColor: group.dotColor,
+    category: group.label,
+  }))
+);
 
-      <div className="section-container relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-indigo-500" />
-            <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest">
-              Skills
+// Split into two rows for visual variety
+const midpoint = Math.ceil(allSkillsTagged.length / 2);
+const row1Skills = allSkillsTagged.slice(0, midpoint);
+const row2Skills = allSkillsTagged.slice(midpoint);
+
+function MarqueeRow({
+  items,
+  reverse = false,
+}: {
+  items: typeof allSkillsTagged;
+  reverse?: boolean;
+}) {
+  // Duplicate for seamless loop
+  const doubled = [...items, ...items];
+
+  return (
+    <div className="relative overflow-hidden">
+      {/* Fade edges */}
+      <div className="absolute inset-y-0 left-0 w-16 sm:w-24 bg-gradient-to-r from-[var(--surface-base)] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-16 sm:w-24 bg-gradient-to-l from-[var(--surface-base)] to-transparent z-10 pointer-events-none" />
+
+      <div
+        className="flex gap-3 animate-marquee w-max"
+        style={reverse ? { animationDirection: "reverse" } : undefined}
+      >
+        {doubled.map((skill, i) => (
+          <div
+            key={`${skill.name}-${i}`}
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.12] transition-colors duration-200 shrink-0 select-none"
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full shrink-0 ${skill.dotColor}`}
+            />
+            <span className="text-sm text-[var(--text-secondary)] whitespace-nowrap font-medium">
+              {skill.name}
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Technologies I work with.
-          </h2>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function Skills() {
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+
+  return (
+    <section id="skills" className="py-20 relative">
+      <div className="section-container">
+        {/* Section Header — clean and minimal */}
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)] mb-12"
+        >
+          Skills &amp; Tools
+        </motion.h2>
+
+        {/* Infinite Marquee Rows */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7 }}
+          className="space-y-3 mb-16"
+        >
+          <MarqueeRow items={row1Skills} />
+          <MarqueeRow items={row2Skills} reverse />
         </motion.div>
 
-        {/* Skill Groups */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {skillGroups.map((group, i) => (
-            <motion.div
-              key={group.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-indigo-500/15 transition-all duration-300"
-            >
-              <h3
-                className={`text-sm font-semibold uppercase tracking-wider mb-4 ${group.color.split(" ")[0]}`}
+        {/* Category Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          {skillGroups.map((group, i) => {
+            const isExpanded = expandedCategory === group.label;
+
+            return (
+              <motion.div
+                key={group.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.35, delay: i * 0.04 }}
+                onMouseEnter={() => setExpandedCategory(group.label)}
+                onMouseLeave={() => setExpandedCategory(null)}
+                className={`relative p-4 sm:p-5 rounded-xl bg-white/[0.02] border border-white/[0.06] border-l-2 ${group.borderColor} cursor-default transition-all duration-300 ${
+                  isExpanded
+                    ? "scale-[1.03] border-white/[0.12] bg-white/[0.04] shadow-lg shadow-black/20"
+                    : "hover:bg-white/[0.03]"
+                }`}
               >
-                {group.label}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {group.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-lg border ${group.color} transition-all duration-200 hover:scale-[1.05] cursor-default`}
-                  >
-                    {skill}
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)]">
+                    {group.label}
+                  </h3>
+                  <span className="text-xs text-[var(--text-muted)] tabular-nums">
+                    {group.skills.length}
                   </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                </div>
+
+                {/* Collapsed: just the count dash */}
+                {!isExpanded && (
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
+                    {group.skills.length} skill{group.skills.length !== 1 ? "s" : ""}
+                  </p>
+                )}
+
+                {/* Expanded: show skill names */}
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-2 flex flex-wrap gap-1.5"
+                  >
+                    {group.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2 py-0.5 text-xs text-[var(--text-secondary)] bg-white/[0.04] border border-white/[0.06] rounded"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </motion.div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

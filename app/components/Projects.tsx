@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight,
@@ -11,6 +11,7 @@ import {
   Container,
   Github,
   ExternalLink,
+  Store,
 } from "lucide-react";
 
 type ProjectCategory = "All" | "AI / ML" | "Full Stack" | "DevOps";
@@ -29,12 +30,28 @@ interface Project {
   accentColor: string;
   githubLink: string;
   liveLink?: string;
-  targets: string[];
 }
 
 const projects: Project[] = [
   {
     id: 1,
+    title: "Stax Store Management System",
+    subtitle: "Enterprise POS & Inventory Engine",
+    category: ["Full Stack"],
+    status: "Live",
+    description:
+      "An enterprise-grade Point of Sale (POS) and inventory management engine featuring secure RBAC, dynamic supplier linking, expense tracking, real-time financial analytics, and customized thermal receipt generation.",
+    problem:
+      "Cashiers and store administrators need a unified, lightning-fast system to manage inventory, log operational expenses, and process transactions without expensive dedicated hardware.",
+    impact: "Role-based access (RBAC) • Recharts analytics • Thermal receipts • HTML5-QRCode scanning",
+    tech: ["React", "Vite", "Node.js", "Express", "MongoDB", "Mongoose", "Tailwind CSS", "Recharts", "Electron"],
+    icon: <Store size={24} />,
+    accentColor: "from-emerald-500 to-teal-400",
+    githubLink: "https://github.com/Redhathack1/stax-store-management-system",
+    liveLink: "https://stax-store.vercel.app",
+  },
+  {
+    id: 2,
     title: "IronGate Framework",
     subtitle: "Fintech API Testing",
     category: ["Full Stack"],
@@ -48,10 +65,9 @@ const projects: Project[] = [
     icon: <Database size={24} />,
     accentColor: "from-blue-500 to-cyan-400",
     githubLink: "https://github.com/Redhathack1/IronGate-Framework",
-    targets: ["Fintech startups", "MERN dev roles", "Backend contracts"],
   },
   {
-    id: 2,
+    id: 3,
     title: "AI Testing Agent",
     subtitle: "Autonomous Test Generation",
     category: ["AI / ML"],
@@ -65,10 +81,9 @@ const projects: Project[] = [
     icon: <Cpu size={24} />,
     accentColor: "from-purple-500 to-pink-400",
     githubLink: "https://github.com/Redhathack1",
-    targets: ["AI startups", "SDET roles", "QA automation contracts"],
   },
   {
-    id: 3,
+    id: 4,
     title: "SaaS Dashboard",
     subtitle: "Multi-Tenant Platform",
     category: ["Full Stack"],
@@ -82,10 +97,9 @@ const projects: Project[] = [
     icon: <BarChart3 size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1",
-    targets: ["Freelance clients", "Startup SaaS roles", "Remote contracts"],
   },
   {
-    id: 4,
+    id: 5,
     title: "AI Chatbot Assistant",
     subtitle: "RAG Document Q&A",
     category: ["AI / ML", "Full Stack"],
@@ -99,10 +113,9 @@ const projects: Project[] = [
     icon: <MessageSquareText size={24} />,
     accentColor: "from-amber-500 to-orange-400",
     githubLink: "https://github.com/Redhathack1",
-    targets: ["Business owners", "Agencies", "AI integration gigs"],
   },
   {
-    id: 5,
+    id: 6,
     title: "DevOps CI/CD Pipeline",
     subtitle: "Infrastructure as Code",
     category: ["DevOps"],
@@ -116,22 +129,264 @@ const projects: Project[] = [
     icon: <Container size={24} />,
     accentColor: "from-sky-500 to-blue-400",
     githubLink: "https://github.com/Redhathack1",
-    targets: ["Senior dev roles", "DevOps contracts", "Platform engineering"],
   },
 ];
 
-const categories: ProjectCategory[] = [
-  "All",
-  "AI / ML",
-  "Full Stack",
-  "DevOps",
-];
+const categories: ProjectCategory[] = ["All", "AI / ML", "Full Stack", "DevOps"];
 
 const statusColors: Record<string, string> = {
   Live: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   "In Progress": "bg-amber-500/10 text-amber-400 border-amber-500/20",
   "Coming Soon": "bg-sky-500/10 text-sky-400 border-sky-500/20",
 };
+
+const statusDot: Record<string, string> = {
+  Live: "bg-emerald-400",
+  "In Progress": "bg-amber-400",
+  "Coming Soon": "bg-sky-400",
+};
+
+function handleTilt(e: React.MouseEvent<HTMLDivElement>) {
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  const rotateX = ((y - centerY) / centerY) * -6;
+  const rotateY = ((x - centerX) / centerX) * 6;
+  el.style.setProperty("--rx", `${rotateX}deg`);
+  el.style.setProperty("--ry", `${rotateY}deg`);
+}
+
+function resetTilt(e: React.MouseEvent<HTMLDivElement>) {
+  const el = e.currentTarget;
+  el.style.setProperty("--rx", "0deg");
+  el.style.setProperty("--ry", "0deg");
+}
+
+function ProjectCard({
+  project,
+  isFeatured,
+}: {
+  project: Project;
+  isFeatured: boolean;
+}) {
+  const iconBgMap: Record<string, string> = {
+    "from-blue-500 to-cyan-400": "rgba(59,130,246,0.12)",
+    "from-purple-500 to-pink-400": "rgba(168,85,247,0.12)",
+    "from-emerald-500 to-teal-400": "rgba(52,211,153,0.12)",
+    "from-amber-500 to-orange-400": "rgba(245,158,11,0.12)",
+    "from-sky-500 to-blue-400": "rgba(14,165,233,0.12)",
+  };
+
+  const iconBg = iconBgMap[project.accentColor] ?? "rgba(124,106,239,0.12)";
+
+  if (isFeatured) {
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        onMouseMove={handleTilt}
+        onMouseLeave={resetTilt}
+        className="tilt-card group relative rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-[var(--border-active)] transition-colors duration-300 mb-8 overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col md:flex-row">
+          {/* Icon side */}
+          <div className="flex items-center justify-center md:w-56 shrink-0 p-8 md:p-10 border-b md:border-b-0 md:border-r border-white/[0.04]">
+            <div
+              className="p-6 rounded-2xl"
+              style={{ background: iconBg }}
+            >
+              <div className="text-[var(--text-primary)] scale-150">
+                {project.icon}
+              </div>
+            </div>
+          </div>
+
+          {/* Content side */}
+          <div className="flex-1 p-6 sm:p-8 lg:p-10">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-2xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-[var(--text-muted)] mt-1">
+                  {project.subtitle}
+                </p>
+              </div>
+              <span
+                className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full border shrink-0 ${statusColors[project.status]}`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${statusDot[project.status]}`} />
+                {project.status}
+              </span>
+            </div>
+
+            <p className="text-[var(--text-secondary)] leading-relaxed mb-3">
+              {project.description}
+            </p>
+
+            <p className="text-sm text-[var(--text-muted)] italic mb-4">
+              {project.problem}
+            </p>
+
+            <div className="flex items-center gap-2 mb-5 text-sm text-[var(--accent-cool)]">
+              <span className="font-mono text-xs">▲</span>
+              <span>{project.impact}</span>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tech.map((t, i) => (
+                <span
+                  key={i}
+                  className="px-2.5 py-1 text-xs font-medium bg-white/[0.04] border border-white/[0.06] rounded-md text-[var(--text-secondary)]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4 pt-4 border-t border-white/[0.04]">
+              <a
+                href={project.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              >
+                <Github size={16} />
+                Source Code
+              </a>
+              {project.liveLink && (
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-cool)] transition-colors"
+                >
+                  <ExternalLink size={16} />
+                  Live Demo
+                </a>
+              )}
+              <a
+                href={project.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/[0.05] rounded-lg transition-all"
+              >
+                <ArrowUpRight size={18} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Standard card
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35 }}
+      onMouseMove={handleTilt}
+      onMouseLeave={resetTilt}
+      className="tilt-card group relative p-6 sm:p-8 rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-[var(--border-active)] transition-colors duration-300"
+    >
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--accent)]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-5">
+          <div className="flex items-center gap-4">
+            <div
+              className="p-3 rounded-xl"
+              style={{ background: iconBgMap[project.accentColor] ?? "rgba(124,106,239,0.12)" }}
+            >
+              <div className="text-[var(--text-primary)]">{project.icon}</div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                {project.title}
+              </h3>
+              <p className="text-sm text-[var(--text-muted)]">
+                {project.subtitle}
+              </p>
+            </div>
+          </div>
+          <span
+            className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full border shrink-0 ${statusColors[project.status]}`}
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${statusDot[project.status]}`} />
+            {project.status}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p className="text-[var(--text-secondary)] leading-relaxed mb-4">
+          {project.description}
+        </p>
+
+        {/* Impact */}
+        <div className="flex items-center gap-2 mb-5 text-sm text-[var(--accent-cool)]">
+          <span className="font-mono text-xs">▲</span>
+          <span>{project.impact}</span>
+        </div>
+
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((t, i) => (
+            <span
+              key={i}
+              className="px-2.5 py-1 text-xs font-medium bg-white/[0.04] border border-white/[0.06] rounded-md text-[var(--text-secondary)]"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        {/* Action Links */}
+        <div className="flex items-center gap-4 pt-4 border-t border-white/[0.04]">
+          <a
+            href={project.githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            <Github size={16} />
+            Source Code
+          </a>
+          {project.liveLink && (
+            <a
+              href={project.liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)] hover:text-[var(--accent-cool)] transition-colors"
+            >
+              <ExternalLink size={16} />
+              Live Demo
+            </a>
+          )}
+          <a
+            href={project.githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto p-2 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-white/[0.05] rounded-lg transition-all"
+          >
+            <ArrowUpRight size={18} />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] =
@@ -142,170 +397,106 @@ export default function Projects() {
       ? projects
       : projects.filter((p) => p.category.includes(activeCategory));
 
+  const [featured, ...rest] = filtered;
+
   return (
     <section id="projects" className="py-28 relative">
       <div className="section-container">
-        {/* Section Header */}
+        {/* Section Header — hand-drawn style */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="mb-14"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8 bg-indigo-500" />
-            <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest">
-              Projects
+          <div className="relative inline-block mb-3">
+            <span
+              className="text-6xl sm:text-7xl font-black tracking-tighter text-[var(--text-primary)] inline-block"
+              style={{ transform: "rotate(-2deg)", fontStyle: "italic" }}
+            >
+              Work
             </span>
+            <svg
+              className="absolute -bottom-1 left-0 w-full"
+              viewBox="0 0 120 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <motion.path
+                d="M2 5.5C20 2 40 7 60 4C80 1 100 6 118 3"
+                stroke="var(--accent)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              />
+            </svg>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Featured work &amp; builds.
-          </h2>
-          <p className="text-slate-400 max-w-2xl">
-            Each project solves a real-world problem. Click through to see
-            architecture, live demos, and the thinking behind every decision.
+          <p className="text-lg text-[var(--text-secondary)] font-light">
+            Featured projects &amp; builds.
           </p>
         </motion.div>
 
-        {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-wrap gap-2 mb-12"
+        {/* Filter Tabs — inline text links with animated underline */}
+        <motion.nav
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="flex flex-wrap gap-6 sm:gap-8 mb-14"
+          aria-label="Project category filter"
         >
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-200 ${
-                activeCategory === cat
-                  ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/30"
-                  : "bg-white/[0.03] text-slate-400 border border-white/[0.06] hover:bg-white/[0.06] hover:text-slate-300"
-              }`}
+              className="relative pb-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer"
+              style={{
+                color:
+                  activeCategory === cat
+                    ? "var(--text-primary)"
+                    : "var(--text-muted)",
+              }}
             >
               {cat}
+              {activeCategory === cat && (
+                <motion.span
+                  layoutId="project-filter-underline"
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--accent)] rounded-full"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
             </button>
           ))}
-        </motion.div>
+        </motion.nav>
 
-        {/* Project Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="group relative p-6 sm:p-8 rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-indigo-500/25 transition-all duration-300"
-              >
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/[0.03] to-purple-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Editorial Layout */}
+        <AnimatePresence mode="popLayout">
+          {/* Featured (first) project — full-width horizontal */}
+          {featured && (
+            <ProjectCard
+              key={`featured-${featured.id}`}
+              project={featured}
+              isFeatured
+            />
+          )}
 
-                <div className="relative z-10">
-                  {/* Header Row */}
-                  <div className="flex items-start justify-between mb-5">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={`p-3 rounded-xl bg-gradient-to-br ${project.accentColor} bg-opacity-10`}
-                        style={{
-                          background: `linear-gradient(135deg, ${project.accentColor.includes("blue") ? "rgba(59,130,246,0.1)" : project.accentColor.includes("purple") ? "rgba(168,85,247,0.1)" : project.accentColor.includes("emerald") ? "rgba(52,211,153,0.1)" : project.accentColor.includes("amber") ? "rgba(245,158,11,0.1)" : "rgba(14,165,233,0.1)"}, transparent)`,
-                        }}
-                      >
-                        <div className="text-slate-300">{project.icon}</div>
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="text-sm text-slate-500">
-                          {project.subtitle}
-                        </p>
-                      </div>
-                    </div>
-                    <span
-                      className={`px-3 py-1 text-xs font-medium rounded-full border ${statusColors[project.status]}`}
-                    >
-                      {project.status}
-                    </span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-slate-400 leading-relaxed mb-4">
-                    {project.description}
-                  </p>
-
-                  {/* Impact Metrics */}
-                  <div className="flex items-center gap-2 mb-5 text-sm text-indigo-400/80">
-                    <span className="font-mono">↗</span>
-                    <span>{project.impact}</span>
-                  </div>
-
-                  {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map((t, i) => (
-                      <span
-                        key={i}
-                        className="px-2.5 py-1 text-xs font-medium bg-white/[0.04] border border-white/[0.06] rounded-md text-slate-400"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Target Roles */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.targets.map((target, i) => (
-                      <span
-                        key={i}
-                        className="px-2.5 py-1 text-xs font-medium bg-indigo-500/[0.06] border border-indigo-500/[0.1] rounded-md text-indigo-400/70"
-                      >
-                        {target}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Links */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-white/[0.04]">
-                    <a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
-                    >
-                      <Github size={16} />
-                      Source Code
-                    </a>
-                    {project.liveLink && (
-                      <a
-                        href={project.liveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
-                      >
-                        <ExternalLink size={16} />
-                        Live Demo
-                      </a>
-                    )}
-                    <a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-auto p-2 text-slate-500 hover:text-white hover:bg-white/[0.05] rounded-lg transition-all"
-                    >
-                      <ArrowUpRight size={18} />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+          {/* Remaining projects — 2-column grid */}
+          {rest.length > 0 && (
+            <div className="grid md:grid-cols-2 gap-6">
+              {rest.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  isFeatured={false}
+                />
+              ))}
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

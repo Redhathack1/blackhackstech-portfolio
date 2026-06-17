@@ -1,54 +1,44 @@
 @import "tailwindcss";
 
 /* ========================================
-   BlackHacksTech — Design System
+   BlackHacksTech — Design System v2
+   Rewritten for performance & personality
    ======================================== */
 
 :root {
-  /* Brand Colors */
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-tertiary: #ec4899;
-  --accent-cyan: #22d3ee;
-  --accent-emerald: #34d399;
+  /* Brand — warmer, less generic than pure indigo */
+  --accent: #7c6aef;
+  --accent-hover: #9486f7;
+  --accent-warm: #e8735a;
+  --accent-cool: #5de4c7;
+  --accent-gold: #f0c674;
 
-  /* Surfaces */
-  --surface-base: #050510;
-  --surface-raised: rgba(255, 255, 255, 0.03);
-  --surface-overlay: rgba(255, 255, 255, 0.06);
-  --surface-elevated: rgba(255, 255, 255, 0.08);
+  /* Surfaces — darker, richer base */
+  --surface-base: #09090f;
+  --surface-card: rgba(255, 255, 255, 0.025);
+  --surface-card-hover: rgba(255, 255, 255, 0.05);
+  --surface-elevated: rgba(255, 255, 255, 0.07);
 
   /* Text */
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-accent: #818cf8;
+  --text-primary: #eaedf3;
+  --text-secondary: #8a91a4;
+  --text-muted: #565c6e;
 
   /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(99, 102, 241, 0.4);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(124, 106, 239, 0.35);
 
-  /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-  --gradient-glow: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.08));
-
-  /* Fonts */
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), 'SF Mono', monospace;
-
-  /* Spacing */
-  --section-gap: 8rem;
-  --container-max: 1200px;
+  /* Layout */
+  --container-max: 1180px;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 /* ========================================
-   Base Styles
+   Reset & Base
    ======================================== */
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
@@ -65,157 +55,218 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ambient background glow */
+/* Single lightweight ambient glow — no blur() filters */
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 50%);
+  top: -40%;
+  left: 50%;
+  width: 140%;
+  height: 80%;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(124, 106, 239, 0.07) 0%,
+    transparent 70%
+  );
   pointer-events: none;
   z-index: 0;
 }
 
 /* ========================================
-   Scrollbar
+   Scroll Progress Bar
    ======================================== */
 
-::-webkit-scrollbar {
-  width: 8px;
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+  z-index: 100;
+  transform-origin: left;
+  will-change: transform;
 }
-::-webkit-scrollbar-track {
-  background: var(--surface-base);
-}
+
+/* ========================================
+   Scrollbar — minimal
+   ======================================== */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.4);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.6);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ========================================
-   Custom Animations
+   Selection
    ======================================== */
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes slide-in-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 6s ease infinite;
-}
-
-.animate-marquee {
-  animation: slide-in-marquee 30s linear infinite;
+::selection {
+  background: rgba(124, 106, 239, 0.3);
+  color: #fff;
 }
 
 /* ========================================
-   Utility Classes
+   Layout
+   ======================================== */
+
+.section-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .section-container { padding: 0 2rem; }
+}
+
+/* ========================================
+   Typography
    ======================================== */
 
 .gradient-text {
-  background: var(--gradient-brand);
+  background: linear-gradient(135deg, var(--accent), var(--accent-warm));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.glass {
-  background: var(--surface-raised);
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.glass-hover:hover {
-  background: var(--surface-overlay);
-  border-color: var(--border-hover);
-}
-
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: var(--gradient-brand);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-  filter: blur(8px);
-}
-
-.glow-border:hover::before {
-  opacity: 0.3;
-}
-
-/* Section container */
-.section-container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .section-container {
-    padding: 0 2rem;
-  }
-}
-
-/* Grain texture overlay */
-.grain-overlay::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.4;
+.text-balance {
+  text-wrap: balance;
 }
 
 /* ========================================
-   Selection Style
+   Cards & Glass
    ======================================== */
 
-::selection {
-  background: rgba(99, 102, 241, 0.3);
-  color: #fff;
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--border-active);
+  background: var(--surface-card-hover);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes timeline-pulse {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+  will-change: transform;
+}
+
+/* ========================================
+   Interactive utilities
+   ======================================== */
+
+/* Magnetic button base */
+.magnetic-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tilt card effect (JS-driven via style vars) */
+.tilt-card {
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* Focus ring for inputs */
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124, 106, 239, 0.12);
+  background: var(--surface-card-hover);
+}
+
+/* ========================================
+   Section divider — organic alternative
+   to the identical line+label on every section
+   ======================================== */
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
 }
