@@ -157,7 +157,7 @@ export default function About() {
             <div className="flex flex-wrap gap-3 pt-5">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--accent)]/[0.06] border border-[var(--accent)]/20 text-sm text-[var(--text-primary)]">
                 <MapPin size={14} className="text-[var(--accent-cool)]" />
-                United Kingdom
+                Nigeria
               </div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--accent-warm)]/[0.06] border border-[var(--accent-warm)]/20 text-sm text-[var(--text-primary)]">
                 <Briefcase size={14} className="text-[var(--accent-warm)]" />

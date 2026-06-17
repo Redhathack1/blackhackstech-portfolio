@@ -123,7 +123,7 @@ export default function Contact() {
             <div className="mt-3 flex flex-col gap-3 pl-1">
               <span className="flex items-center gap-2.5 text-sm text-[var(--text-muted)]">
                 <MapPin size={14} className="text-[var(--accent-warm)]" />
-                Based in the United Kingdom
+                Based in Nigeria
               </span>
               <span className="flex items-center gap-2.5 text-sm text-[var(--text-muted)]">
                 <Clock size={14} className="text-[var(--accent-cool)]" />
