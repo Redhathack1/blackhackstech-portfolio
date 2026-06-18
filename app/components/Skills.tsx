@@ -12,10 +12,10 @@ interface SkillGroup {
 
 const skillGroups: SkillGroup[] = [
   {
-    label: "Programming Languages",
+    label: "Languages",
     dotColor: "bg-blue-400",
     borderColor: "border-l-blue-400",
-    skills: ["Java", "Python", "TypeScript", "JavaScript", "SQL"],
+    skills: ["Java", "Python", "TypeScript", "SQL"],
   },
   {
     label: "AI & ML",

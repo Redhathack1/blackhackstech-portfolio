@@ -30,6 +30,7 @@ interface Project {
   accentColor: string;
   githubLink: string;
   liveLink?: string;
+  image?: string;
 }
 
 const projects: Project[] = [
@@ -48,7 +49,8 @@ const projects: Project[] = [
     icon: <Store size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1/stax-store-management-system",
-    liveLink: "https://stax-store.vercel.app",
+    liveLink: "http://13.60.215.119",
+    image: "/projects/stax_mockup.jpg",
   },
   {
     id: 2,
@@ -65,6 +67,7 @@ const projects: Project[] = [
     icon: <Database size={24} />,
     accentColor: "from-blue-500 to-cyan-400",
     githubLink: "https://github.com/Redhathack1/IronGate-Framework",
+    image: "/projects/irongate_diagram.jpg",
   },
   {
     id: 3,
@@ -81,6 +84,7 @@ const projects: Project[] = [
     icon: <Cpu size={24} />,
     accentColor: "from-purple-500 to-pink-400",
     githubLink: "https://github.com/Redhathack1",
+    image: "/projects/ai_agent_mockup.jpg",
   },
   {
     id: 4,
@@ -97,6 +101,7 @@ const projects: Project[] = [
     icon: <BarChart3 size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1",
+    image: "/projects/saas_dashboard_mockup.jpg",
   },
   {
     id: 5,
@@ -113,6 +118,7 @@ const projects: Project[] = [
     icon: <MessageSquareText size={24} />,
     accentColor: "from-amber-500 to-orange-400",
     githubLink: "https://github.com/Redhathack1",
+    image: "/projects/chatbot_assistant_mockup.jpg",
   },
   {
     id: 6,
@@ -129,6 +135,7 @@ const projects: Project[] = [
     icon: <Container size={24} />,
     accentColor: "from-sky-500 to-blue-400",
     githubLink: "https://github.com/Redhathack1",
+    image: "/projects/devops_pipeline_mockup.jpg",
   },
 ];
 
@@ -197,16 +204,29 @@ function ProjectCard({
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row">
-          {/* Icon side */}
-          <div className="flex items-center justify-center md:w-56 shrink-0 p-8 md:p-10 border-b md:border-b-0 md:border-r border-white/[0.04]">
-            <div
-              className="p-6 rounded-2xl"
-              style={{ background: iconBg }}
-            >
-              <div className="text-[var(--text-primary)] scale-150">
-                {project.icon}
+          {/* Image/Icon side */}
+          <div className="flex items-center justify-center md:w-[26rem] shrink-0 border-b md:border-b-0 md:border-r border-white/[0.04] overflow-hidden relative min-h-[14rem] md:min-h-auto bg-black/10">
+            {project.image ? (
+              <div className="w-full h-full min-h-[14rem] md:absolute md:inset-0">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-base)]/80 via-transparent to-transparent md:hidden" />
               </div>
-            </div>
+            ) : (
+              <div className="p-8 md:p-10 flex items-center justify-center">
+                <div
+                  className="p-6 rounded-2xl"
+                  style={{ background: iconBg }}
+                >
+                  <div className="text-[var(--text-primary)] scale-150">
+                    {project.icon}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Content side */}
@@ -298,11 +318,22 @@ function ProjectCard({
       transition={{ duration: 0.35 }}
       onMouseMove={handleTilt}
       onMouseLeave={resetTilt}
-      className="tilt-card group relative p-6 sm:p-8 rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-[var(--border-active)] transition-colors duration-300"
+      className="tilt-card group relative rounded-2xl bg-white/[0.025] border border-white/[0.06] hover:border-[var(--border-active)] transition-colors duration-300 overflow-hidden"
     >
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--accent)]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      <div className="relative z-10">
+      {project.image && (
+        <div className="h-52 w-full overflow-hidden border-b border-white/[0.04] relative bg-black/10">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface-base)]/40 to-transparent" />
+        </div>
+      )}
+
+      <div className="relative z-10 p-6 sm:p-8">
         {/* Header */}
         <div className="flex items-start justify-between mb-5">
           <div className="flex items-center gap-4">

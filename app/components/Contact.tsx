@@ -20,8 +20,8 @@ const contactLinks = [
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "Oluwaferanmi Oladapo",
-    href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
+    value: "BlackHacksTech",
+    href: "https://linkedin.com/in/BlackHacksTech",
   },
 ];
 
@@ -127,7 +127,7 @@ export default function Contact() {
               </span>
               <span className="flex items-center gap-2.5 text-sm text-[var(--text-muted)]">
                 <Clock size={14} className="text-[var(--accent-cool)]" />
-                Usually responds within 24 hours
+                Available 24/7
               </span>
             </div>
           </motion.div>

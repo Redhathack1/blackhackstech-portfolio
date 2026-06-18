@@ -10,12 +10,12 @@ const socials = [
   },
   {
     icon: Linkedin,
-    href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
+    href: "https://linkedin.com/in/BlackHacksTech",
     label: "LinkedIn",
   },
   {
     icon: Mail,
-    href: "mailto:pherolee.young@gmail.com",
+    href: "mailto:blackhackstech@gmail.com",
     label: "Email",
   },
 ];
@@ -27,8 +27,12 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           {/* ── Left: Brand ── */}
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-[var(--accent)] to-[var(--accent-warm)] text-white text-xs font-bold">
-              B
+            <span className="flex h-7 w-7 items-center justify-center rounded-md overflow-hidden border border-white/[0.08]">
+              <img
+                src="/logo.jpg"
+                alt="Logo"
+                className="w-full h-full object-cover"
+              />
             </span>
             <span className="text-[var(--text-muted)]">
               © {new Date().getFullYear()} BlackHacksTech
@@ -37,7 +41,7 @@ export default function Footer() {
 
           {/* ── Center: Tagline ── */}
           <p className="text-[var(--text-muted)] text-xs tracking-wide">
-            Crafted with care in the UK 🇬🇧
+            Crafted with care in Nigeria 🇳🇬
           </p>
 
           {/* ── Right: Social icons ── */}

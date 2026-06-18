@@ -4,10 +4,18 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 
-const headlineWords = [
-  { text: "I build", className: "" },
-  { text: "intelligent", className: "gradient-text" },
-  { text: "automation systems.", className: "" },
+const headlineLines = [
+  {
+    elements: [
+      { text: "I build ", className: "" },
+      { text: "intelligent", className: "gradient-text" }
+    ]
+  },
+  {
+    elements: [
+      { text: "automation systems.", className: "" }
+    ]
+  }
 ];
 
 const socials = [
@@ -18,12 +26,12 @@ const socials = [
   },
   {
     icon: Linkedin,
-    href: "https://linkedin.com/in/oluwaferanmi-oladapo-5044901a1",
+    href: "https://linkedin.com/in/BlackHacksTech",
     label: "LinkedIn",
   },
   {
     icon: Mail,
-    href: "mailto:pherolee.young@gmail.com",
+    href: "mailto:blackhackstech@gmail.com",
     label: "Email",
   },
 ];
@@ -61,9 +69,8 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Headline — staggered from left with rotation */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.08] tracking-tight mb-8">
-              {headlineWords.map((word, i) => (
+              {headlineLines.map((line, i) => (
                 <motion.span
                   key={i}
                   initial={{ opacity: 0, x: -50, rotateZ: -3 }}
@@ -73,9 +80,13 @@ export default function Hero() {
                     delay: 0.2 + i * 0.15,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className={`block ${word.className}`}
+                  className="block"
                 >
-                  {word.text}
+                  {line.elements.map((el, j) => (
+                    <span key={j} className={el.className}>
+                      {el.text}
+                    </span>
+                  ))}
                 </motion.span>
               ))}
             </h1>
@@ -253,41 +264,41 @@ export default function Hero() {
             </motion.div>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
-          <a
-            href="#about"
-            className="flex flex-col items-center gap-2 transition-colors duration-200"
-            style={{ color: "var(--text-muted)" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--text-secondary)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--text-muted)")
-            }
-          >
-            <span className="text-[0.65rem] font-semibold tracking-[0.2em] uppercase">
-              Scroll
-            </span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{
-                repeat: Infinity,
-                duration: 1.8,
-                ease: "easeInOut",
-              }}
-            >
-              <ArrowDown size={14} />
-            </motion.div>
-          </a>
-        </motion.div>
       </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
+      >
+        <a
+          href="#about"
+          className="flex flex-col items-center gap-2 transition-colors duration-200"
+          style={{ color: "var(--text-muted)" }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.color = "var(--text-secondary)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.color = "var(--text-muted)")
+          }
+        >
+          <span className="text-[0.65rem] font-semibold tracking-[0.2em] uppercase">
+            Scroll
+          </span>
+          <motion.div
+            animate={{ y: [0, 5, 0] }}
+            transition={{
+              repeat: Infinity,
+              duration: 1.8,
+              ease: "easeInOut",
+            }}
+          >
+            <ArrowDown size={14} />
+          </motion.div>
+        </a>
+      </motion.div>
     </section>
   );
 }
