@@ -8,8 +8,8 @@ const contactLinks = [
   {
     icon: Mail,
     label: "Email",
-    value: "pherolee.young@gmail.com",
-    href: "mailto:pherolee.young@gmail.com",
+    value: "blackhackstech@gmail.com",
+    href: "mailto:blackhackstech@gmail.com",
   },
   {
     icon: Github,
@@ -50,7 +50,7 @@ export default function Contact() {
     const subject = (form.elements.namedItem("subject") as HTMLInputElement).value;
     const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
 
-    const mailtoLink = `mailto:pherolee.young@gmail.com?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:blackhackstech@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(
       `From: ${name} (${email})\n\n${message}`

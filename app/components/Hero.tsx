@@ -45,7 +45,7 @@ export default function Hero() {
           "radial-gradient(ellipse 80% 50% at 20% 60%, rgba(124, 106, 239, 0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 30%, rgba(232, 115, 90, 0.04) 0%, transparent 50%), var(--surface-base)",
       }}
     >
-      <div className="section-container relative z-10 pt-32 pb-24 w-full">
+      <div className="section-container relative z-10 pt-24 pb-16 md:pt-32 md:pb-24 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* LEFT — Main Content */}
           <div className="lg:col-span-7 xl:col-span-7">
@@ -54,7 +54,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-10"
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 md:mb-10"
               style={{
                 background: "rgba(16, 185, 129, 0.08)",
                 border: "1px solid rgba(16, 185, 129, 0.15)",
@@ -69,7 +69,7 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.08] tracking-tight mb-8">
+            <h1 className="text-[8.5vw] sm:text-6xl md:text-7xl font-bold leading-[1.08] tracking-tight mb-6 md:mb-8">
               {headlineLines.map((line, i) => (
                 <motion.span
                   key={i}
@@ -96,7 +96,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.75 }}
-              className="text-lg sm:text-xl leading-relaxed max-w-xl mb-10"
+              className="text-lg sm:text-xl leading-relaxed max-w-xl mb-6 md:mb-10"
               style={{ color: "var(--text-secondary)" }}
             >
               Hi, I&apos;m{" "}
@@ -116,7 +116,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="flex flex-wrap items-center gap-4 mb-10"
+              className="flex flex-wrap items-center gap-4 mb-6 md:mb-10"
             >
               <motion.a
                 href="#projects"
@@ -271,7 +271,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
+        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20"
       >
         <a
           href="#about"
