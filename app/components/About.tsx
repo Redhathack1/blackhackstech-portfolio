@@ -135,7 +135,7 @@ export default function About() {
               systems that think, adapt, and automate.
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed">
-              With a background in Computer Science and hands-on experience
+              With a background in Computer Engineering and hands-on experience
               across fintech, AI, and network infrastructure, I bring a
               methodical, engineering-first approach to every project. My work
               spans from designing production-grade testing frameworks that
@@ -168,7 +168,7 @@ export default function About() {
                   size={14}
                   className="text-[var(--accent-gold)]"
                 />
-                BSc Computer Science
+                HND Computer Engineering
               </div>
             </div>
           </motion.div>

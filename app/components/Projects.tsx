@@ -108,7 +108,7 @@ const projects: Project[] = [
     title: "AI Chatbot Assistant",
     subtitle: "RAG Document Q&A",
     category: ["AI / ML", "Full Stack"],
-    status: "In Progress",
+    status: "Live",
     description:
       "A RAG-powered chatbot that answers questions from custom documents — company FAQs, product manuals, internal knowledge bases. The #1 thing businesses are currently paying for.",
     problem:
@@ -118,6 +118,7 @@ const projects: Project[] = [
     icon: <MessageSquareText size={24} />,
     accentColor: "from-amber-500 to-orange-400",
     githubLink: "https://github.com/Redhathack1",
+    liveLink: "http://13.48.205.195:3000/",
     image: "/projects/chatbot_assistant_mockup.jpg",
   },
   {
