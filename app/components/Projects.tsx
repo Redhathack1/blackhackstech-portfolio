@@ -12,6 +12,7 @@ import {
   Github,
   ExternalLink,
   Store,
+  Trophy,
 } from "lucide-react";
 
 type ProjectCategory = "All" | "AI / ML" | "Full Stack" | "DevOps";
@@ -137,6 +138,24 @@ const projects: Project[] = [
     accentColor: "from-sky-500 to-blue-400",
     githubLink: "https://github.com/Redhathack1",
     image: "/projects/devops_pipeline_mockup.jpg",
+  },
+  {
+    id: 7,
+    title: "CODM Results Maker & GFX Collation Tool",
+    subtitle: "OCR Tournament Analytics Engine",
+    category: ["AI / ML", "Full Stack"],
+    status: "Live",
+    description:
+      "An automated tournament analytics and GFX collation engine built for COD Mobile matches. It scans scoreboard screenshots, uses Tesseract OCR to parse player stats, registers teams, and compiles leaderboards automatically.",
+    problem:
+      "Manually logging player scores and compiling tournament leaderboard GFX designs takes hours and is highly error-prone. Organizers need a fast, automated solution.",
+    impact: "Automated screenshot parsing • Instant leaderboard GFX generation • Custom scoring systems",
+    tech: ["React", "Vite", "Tesseract.js", "Firebase", "Recharts", "TypeScript", "Tailwind CSS"],
+    icon: <Trophy size={24} />,
+    accentColor: "from-purple-500 to-pink-400",
+    githubLink: "https://github.com/Redhathack1/new-blackhacks-codm-resultsmakertool",
+    liveLink: "https://www.codmanalyst.site/",
+    image: "/projects/resultsmaker_mockup.jpg",
   },
 ];
 
