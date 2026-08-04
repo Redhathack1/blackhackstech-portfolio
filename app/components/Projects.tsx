@@ -92,7 +92,7 @@ const projects: Project[] = [
     title: "SaaS Dashboard",
     subtitle: "Multi-Tenant Platform",
     category: ["Full Stack"],
-    status: "In Progress",
+    status: "Live",
     description:
       "A multi-tenant React + Node.js dashboard with authentication, interactive charts, user roles, and a REST API. The exact product 80% of freelance clients need — built as a live reference.",
     problem:
