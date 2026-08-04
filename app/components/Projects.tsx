@@ -51,7 +51,7 @@ const projects: Project[] = [
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1/stax-store-management-system",
     liveLink: "http://13.60.215.119",
-    image: "/projects/stax_mockup.jpg",
+    image: "/projects/stax.jpg",
   },
   {
     id: 2,
@@ -68,7 +68,7 @@ const projects: Project[] = [
     icon: <Database size={24} />,
     accentColor: "from-blue-500 to-cyan-400",
     githubLink: "https://github.com/Redhathack1/IronGate-Framework",
-    image: "/projects/irongate_diagram.jpg",
+    image: "/projects/irongate.jpg",
   },
   {
     id: 3,
@@ -85,7 +85,7 @@ const projects: Project[] = [
     icon: <Cpu size={24} />,
     accentColor: "from-purple-500 to-pink-400",
     githubLink: "https://github.com/Redhathack1",
-    image: "/projects/ai_agent_mockup.jpg",
+    image: "/projects/ai_agent.jpg",
   },
   {
     id: 4,
@@ -102,7 +102,7 @@ const projects: Project[] = [
     icon: <BarChart3 size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1",
-    image: "/projects/saas_dashboard_mockup.jpg",
+    image: "/projects/saas_dashboard.jpg",
   },
   {
     id: 5,
@@ -120,7 +120,7 @@ const projects: Project[] = [
     accentColor: "from-amber-500 to-orange-400",
     githubLink: "https://github.com/Redhathack1",
     liveLink: "http://13.48.205.195:3000/",
-    image: "/projects/chatbot_assistant_mockup.jpg",
+    image: "/projects/chatbot.jpg",
   },
   {
     id: 6,
@@ -155,7 +155,7 @@ const projects: Project[] = [
     accentColor: "from-purple-500 to-pink-400",
     githubLink: "https://github.com/Redhathack1/new-blackhacks-codm-resultsmakertool",
     liveLink: "https://www.codmanalyst.site/",
-    image: "/projects/resultsmaker_mockup.jpg",
+    image: "/projects/resultsmaker.jpg",
   },
 ];
 
