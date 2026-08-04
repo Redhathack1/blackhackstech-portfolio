@@ -50,7 +50,7 @@ const projects: Project[] = [
     icon: <Store size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1/stax-store-management-system",
-    liveLink: "https://stax.blackhackstech.site",
+    liveLink: "http://stax.blackhackstech.site",
     image: "/projects/stax.jpg",
   },
   {
@@ -102,7 +102,7 @@ const projects: Project[] = [
     icon: <BarChart3 size={24} />,
     accentColor: "from-emerald-500 to-teal-400",
     githubLink: "https://github.com/Redhathack1",
-    liveLink: "https://saas.blackhackstech.site",
+    liveLink: "http://saas.blackhackstech.site",
     image: "/projects/saas_dashboard.jpg",
   },
   {
@@ -120,7 +120,7 @@ const projects: Project[] = [
     icon: <MessageSquareText size={24} />,
     accentColor: "from-amber-500 to-orange-400",
     githubLink: "https://github.com/Redhathack1",
-    liveLink: "https://chatbot.blackhackstech.site",
+    liveLink: "http://chatbot.blackhackstech.site",
     image: "/projects/chatbot.jpg",
   },
   {
