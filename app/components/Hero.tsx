@@ -106,9 +106,10 @@ export default function Hero() {
               >
                 Oluwaferanmi Samuel Oladapo
               </strong>
-              . SDET &amp; AI Engineer bridging the gap between rigorous backend
-              testing and Generative AI — turning complex requirements into
-              reliable, automated systems.
+              . Full-Stack Engineer | SDET &amp; AI Automation Engineer bridging the
+              gap between scalable web applications, rigorous backend testing, and
+              Generative AI — turning complex requirements into reliable, automated
+              systems.
             </motion.p>
 
             {/* CTAs */}

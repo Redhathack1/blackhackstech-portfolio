@@ -126,13 +126,14 @@ export default function About() {
             className="lg:col-span-7 space-y-6"
           >
             <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
-              I&apos;m an{" "}
+              I&apos;m a{" "}
               <strong className="text-[var(--text-primary)] font-semibold">
-                SDET &amp; AI Engineer
+                Full-Stack Engineer, SDET &amp; AI Automation Engineer
               </strong>{" "}
-              who thrives at the intersection of quality engineering and
-              artificial intelligence. I don&apos;t just write tests — I build
-              systems that think, adapt, and automate.
+              who thrives at the intersection of scalable full-stack development,
+              rigorous quality engineering, and artificial intelligence. I don&apos;t
+              just write tests or build UIs — I engineer resilient systems that think,
+              adapt, and automate.
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed">
               With a background in Computer Engineering and hands-on experience

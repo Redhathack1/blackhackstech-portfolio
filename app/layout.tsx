@@ -9,32 +9,35 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BlackHacksTech — Samuel Oladapo | SDET & AI Engineer",
+  title: "BlackHacksTech — Samuel Oladapo | Full-Stack Engineer | SDET & AI Automation Engineer",
   description:
-    "Portfolio of Oluwaferanmi Samuel Oladapo — SDET & AI Engineer specialising in intelligent automation, backend testing frameworks, and Generative AI integration. Available for hire.",
+    "Portfolio of Oluwaferanmi Samuel Oladapo — Full-Stack Engineer, SDET & AI Automation Engineer specialising in enterprise web applications, intelligent test automation, and Generative AI systems. Available for hire.",
   keywords: [
+    "Full-Stack Engineer",
     "SDET",
+    "AI Automation Engineer",
     "AI Engineer",
     "Software Developer",
     "BlackHacksTech",
     "Samuel Oladapo",
     "Playwright",
     "LangChain",
-    "Full Stack Developer",
     "Test Automation",
+    "React",
+    "Node.js",
     "MERN Stack",
   ],
   authors: [{ name: "Oluwaferanmi Samuel Oladapo" }],
   openGraph: {
     title: "BlackHacksTech — Samuel Oladapo",
-    description: "SDET & AI Engineer building intelligent automation systems.",
+    description: "Full-Stack Engineer, SDET & AI Automation Engineer building intelligent systems.",
     type: "website",
     locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
     title: "BlackHacksTech — Samuel Oladapo",
-    description: "SDET & AI Engineer building intelligent automation systems.",
+    description: "Full-Stack Engineer, SDET & AI Automation Engineer building intelligent systems.",
   },
   robots: {
     index: true,
